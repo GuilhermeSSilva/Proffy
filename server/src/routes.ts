@@ -3,6 +3,12 @@ import db from './database/connection';
 
 const routes = express.Router();
 
+interface ScheduleItem {
+  week_day: number,
+  from: string,
+  to: string
+}
+
 routes.post('/classes', async (request, response) => {
 
   const {
@@ -15,13 +21,28 @@ routes.post('/classes', async (request, response) => {
     schedule
   } = request.body;
 
-  await db('users').insert({
+  const insertedUserId = await db('users').insert({
     name,
     avatar,
     whatsapp,
     bio
   });
 
+  const user_id = insertedUserId[0];
+
+  const insertedClassesIds = await db('classes').insert({
+    subject,
+    cost,
+    user_id,
+  })
+
+  const class_id = insertedClassesIds[0];
+
+  const classSchedule = schedule.map((scheduleItem: ScheduleItem) => {
+    return {
+
+    };
+  })
   return response.send();
 
 });
