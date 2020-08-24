@@ -41,11 +41,15 @@ routes.post('/classes', async (request, response) => {
 
   const classSchedule = schedule.map((scheduleItem: ScheduleItem) => {
     return {
+      class_id,
       week_day: scheduleItem.week_day,
       from: convertHoursToMinutes(scheduleItem.from),
       to: convertHoursToMinutes(scheduleItem.to)
     };
   })
+
+  await db('class_schedule').insert(classSchedule)
+
   return response.send();
 
 });
